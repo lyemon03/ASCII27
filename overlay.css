@@ -1,0 +1,256 @@
+:root {
+  /* 레이어를 분리해서 '안내'가 항상 최상단 */
+  --atg-z-overlay: 2147483600; /* 점선/라벨/AI 박스 */
+  --atg-z-guide: 2147483647;   /* 강아지/안내창 */
+}
+
+/* overlay box */
+.atg-overlay {
+  position: absolute;
+  border: 3px dashed #ff2d2d;
+  border-radius: 10px;
+  box-shadow: 0 0 0 2px rgba(255, 45, 45, 0.15);
+  pointer-events: none;
+  z-index: var(--atg-z-overlay);
+}
+
+.atg-label {
+  position: absolute;
+  top: -12px;
+  left: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #ff2d2d;
+  color: white;
+  letter-spacing: 0.2px;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: calc(var(--atg-z-overlay) + 1);
+}
+
+.atg-label small {
+  font-weight: 700;
+  opacity: 0.9;
+  margin-left: 6px;
+}
+
+/* optional: mark the element itself lightly (not required) */
+.atg-marked {
+  outline: 2px dashed rgba(255, 45, 45, 0.35) !important;
+  outline-offset: 2px !important;
+}
+
+/* ===== Guide UI (trusty card) ===== */
+.atg-mascot-img {
+  position: fixed;
+  bottom: -5px;
+  left: 20px;
+  width: 160px;
+  height: auto;
+  z-index: var(--atg-z-guide);
+  cursor: pointer;
+  transition: transform 0.2s;
+  pointer-events: auto;
+}
+
+.atg-mascot-img:hover {
+  transform: scale(1.05);
+}
+
+.atg-guide {
+  position: fixed;
+  left: 200px;
+  bottom: 30px;
+  width: 360px;
+  max-width: calc(100vw - 150px);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(20, 20, 20, 0.08);
+  z-index: var(--atg-z-guide);
+  overflow: hidden;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Apple SD Gothic Neo, Noto Sans KR, sans-serif;
+
+  /* Hidden by default */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-10px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.atg-guide.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.atg-guide-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.70));
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.atg-guide-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 900;
+  font-size: 13px;
+  color: #111;
+}
+
+.atg-guide-close {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  font-size: 18px;
+  line-height: 34px;
+}
+
+.atg-guide-close:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.atg-guide-body {
+  display: block;
+  padding: 16px 20px;
+}
+
+.atg-guide-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 900;
+  color: #111;
+}
+
+.atg-guide-text {
+  margin: 6px 0 0 0;
+  font-size: 13px;
+  line-height: 1.35;
+  color: rgba(0, 0, 0, 0.78);
+}
+
+.atg-guide-actions {
+  display: flex;
+  gap: 8px;
+  padding: 0 14px 14px 14px;
+}
+
+.atg-btn {
+  flex: 1;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 900;
+  font-size: 13px;
+  cursor: pointer;
+  background: white;
+}
+
+.atg-btn:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.atg-btn-primary {
+  border: none;
+  background: #111;
+  color: #fff;
+}
+
+.atg-btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+/* ===== “Real close button” highlight for Type 1 ===== */
+.atg-real-close {
+  outline: 3px solid rgba(0, 120, 255, 0.95) !important;
+  outline-offset: 3px !important;
+  border-radius: 10px !important;
+  box-shadow: 0 0 0 6px rgba(0, 120, 255, 0.18) !important;
+  animation: atgPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes atgPulse {
+  0% {
+    box-shadow: 0 0 0 6px rgba(0, 120, 255, 0.16);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(0, 120, 255, 0.06);
+  }
+  100% {
+    box-shadow: 0 0 0 6px rgba(0, 120, 255, 0.16);
+  }
+}
+
+/* AI overlay */
+.atg-ai-overlay {
+  position: absolute;
+  border: 4px solid #4f46e5;
+  background: rgba(79, 70, 229, 0.1);
+  z-index: var(--atg-z-overlay);
+  pointer-events: none;
+  border-radius: 8px;
+}
+
+.atg-ai-overlay span {
+  position: absolute;
+  top: -24px;
+  left: 0;
+  background: #4f46e5;
+  color: white;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  z-index: calc(var(--atg-z-overlay) + 1);
+}
+
+/* 버튼/요소는 건드리지 않고, 위에만 덮는 빨간 박스/라벨 */
+.adtrap-highlight {
+  position: absolute;
+  z-index: 2147483646;
+  border: 3px solid rgba(255, 80, 80, 0.95);
+  border-radius: 10px;
+  box-shadow: 0 0 0 6px rgba(255, 80, 80, 0.15);
+  pointer-events: none;
+}
+.adtrap-label {
+  position: absolute;
+  z-index: 2147483647;
+  background: rgba(255, 80, 80, 0.95);
+  color: #fff;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+/* AI가 위험을 감지했을 때 화면 전체에 입히는 효과 */
+.danger-overlay {
+  outline: 15px solid #ff2d2d !important;
+  outline-offset: -15px !important;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2147483645; /* 가이드 UI보다는 낮게 설정 */
+  animation: atgDangerFlash 1.5s infinite;
+}
+
+@keyframes atgDangerFlash {
+  0% { box-shadow: inset 0 0 100px rgba(255, 45, 45, 0.4); }
+  50% { box-shadow: inset 0 0 150px rgba(255, 45, 45, 0.7); }
+  100% { box-shadow: inset 0 0 100px rgba(255, 45, 45, 0.4); }
+}
